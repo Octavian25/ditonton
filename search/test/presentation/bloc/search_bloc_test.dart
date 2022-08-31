@@ -15,7 +15,7 @@ void main() {
   late SearchMovieBloc searchBloc;
   late MockSearchMovies mockSearchMovies;
 
-  setUpAll(() {
+  setUp(() {
     mockSearchMovies = MockSearchMovies();
     searchBloc = SearchMovieBloc(mockSearchMovies);
   });
@@ -68,7 +68,10 @@ void main() {
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return searchBloc;
     },
-    act: (bloc) => bloc.add(const OnQueryChanged(tQuery)),
+    act: (bloc) {
+      bloc.add(const OnQueryChanged(tQuery));
+    },
+    setUp: () {},
     wait: const Duration(milliseconds: 500),
     expect: () => [
       SearchMovieLoading(),

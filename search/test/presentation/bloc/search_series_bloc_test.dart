@@ -14,7 +14,7 @@ void main() {
   late SearchSeriesBloc searchSeriesBloc;
   late MockSearchSeries mockSearchSeries;
 
-  setUpAll(() {
+  setUp(() {
     mockSearchSeries = MockSearchSeries();
     searchSeriesBloc = SearchSeriesBloc(mockSearchSeries);
   });

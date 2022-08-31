@@ -16,9 +16,14 @@ workflows:
           source: true
     scripts:
       - flutter packages pub get
-      - cd core
-      - flutter test --coverage
-      - cd ..
+      - name: Testing Core Package
+        script: |
+          cd core
+          flutter test --coverage
+      - name: Testing Saerch Package
+        script: |
+          cd search
+          flutter test --coverage
       - name: Build Android APK
         working_directory: android
         script: ./gradlew assembleRelease
