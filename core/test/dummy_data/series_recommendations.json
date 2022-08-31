@@ -1,0 +1,24 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "adult": false,
+      "backdrop_path": "/uFU4ItwbxHnFHxntb76ASnZbWTN.jpg",
+      "id": 136248,
+      "name": "Tales of the Walking Dead",
+      "original_language": "en",
+      "original_name": "Tales of the Walking Dead",
+      "overview": "Jennifer Walters navigates the complicated life of a single, 30-something attorney who also happens to be a green 6-foot-7-inch superpowered hulk.",
+      "poster_path": "/zRMUHvTgQ79zteQafNI46Nd9XFm.jpg",
+      "media_type": "tv",
+      "genre_ids": [18, 10759, 10765],
+      "popularity": 997.07,
+      "first_air_date": "2022-08-14",
+      "vote_average": 7.674,
+      "vote_count": 23,
+      "origin_country": ["US"]
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 17
+}

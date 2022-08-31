@@ -1,0 +1,86 @@
+{
+    "folderTemplates.fileTemplates": {
+        "create-state-bloc": [
+            "part of '<FTName | snakecase>_bloc.dart';",
+            "@immutable",
+            "abstract class <FTName | pascalcase>State extends Equatable {}",
+            "class <FTName | pascalcase>Initial extends <FTName | pascalcase>State {",
+            "@override",
+            "List<Object?> get props => [];",
+            "}",
+
+            "class <FTName | pascalcase>Loading extends <FTName | pascalcase>State {",
+            "@override",
+            "List<Object?> get props => [];",
+            "}",
+            "class <FTName | pascalcase>Error extends <FTName | pascalcase>State {",
+            "final String error;",
+            "<FTName | pascalcase>Error(this.error);",
+            "@override",
+            "List<Object?> get props => [];",
+            "}",
+
+            "class <FTName | pascalcase>HasData extends <FTName | pascalcase>State {",
+            "final List<Movie> result;",
+            "<FTName | pascalcase>HasData(this.result);",
+            "@override",
+            "List<Object?> get props => [];",
+            "}"
+        ],
+        "create-event-bloc": [
+            "part of '<FTName | snakecase>_bloc.dart';",
+            "@immutable",
+            "abstract class <FTName | pascalcase>Event extends Equatable {}",
+            "class Fetch<FTName | pascalcase> extends <FTName | pascalcase>Event {",
+            "@override",
+            "List<Object?> get props => [];",
+            "}"
+
+        ],
+        "create-bloc": [
+            "import 'package:bloc/bloc.dart';",
+            "import 'package:core/domain/entities/movie.dart';",
+            "import 'package:core/domain/repositories/movie_repository.dart';",
+            "import 'package:equatable/equatable.dart';",
+            "import 'package:meta/meta.dart';",
+
+            "part '<FTName | snakecase>_event.dart';",
+            "part '<FTName | snakecase>_state.dart';",
+
+            "class <FTName | pascalcase>Bloc extends Bloc<<FTName | pascalcase>Event, <FTName | pascalcase>State> {",
+            "final MovieRepository movieRepository;",
+            "<FTName | pascalcase>Bloc(this.movieRepository) : super(<FTName | pascalcase>Initial()) {",
+                "on<Fetch<FTName | pascalcase>>((event, emit) async {",
+                "emit(<FTName | pascalcase>Loading());",
+                "final result = await movieRepository.getNowPlayingMovies();",
+                "result.fold((l) {",
+                    "emit(<FTName | pascalcase>Error(l.message));",
+                "}, (r) {",
+                    "emit(<FTName | pascalcase>HasData(r));",
+                "});",
+                "});",
+                "}",
+            "}",
+        ]
+    },
+    "folderTemplates.structures": [
+        {
+            "name": "Create Bloc",
+            "structure": [
+                {
+                    "fileName": "<FTName | snakecase>_bloc.dart",
+                    "template": "create-bloc"
+                },
+                {
+                    "fileName": "<FTName | snakecase>_event.dart",
+                    "template": "create-event-bloc"
+                },
+                {
+                    "fileName": "<FTName | snakecase>_state.dart",
+                    "template": "create-state-bloc"
+                },
+                
+            ]
+        }
+    ]
+}
