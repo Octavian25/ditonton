@@ -1,0 +1,27 @@
+workflows:
+  default-workflow:
+    name: Default Workflow
+    environment:
+      flutter: stable
+    cache:
+      cache_paths:
+        - $CM_BUILD_DIR/build
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: "*"
+          include: true
+          source: true
+    scripts:
+      - flutter packages pub get
+      - cd core
+      - flutter test --coverage
+      - cd ..
+      - name: Build Android APK
+        working_directory: android
+        script: ./gradlew assembleRelease
+    artifacts:
+      - coverage/lcov.info
+      - app/build/outputs/**/**/*.apk
