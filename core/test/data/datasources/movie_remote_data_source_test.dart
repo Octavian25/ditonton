@@ -20,7 +20,8 @@ void main() {
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    dataSource = MovieRemoteDataSourceImpl(client: mockHttpClient);
+    dataSource =
+        MovieRemoteDataSourceImpl(client: mockHttpClient, isTestingMode: true);
   });
 
   group('get Now Playing Movies', () {
@@ -168,6 +169,40 @@ void main() {
           .thenAnswer((_) async => http.Response('Not Found', 404));
       // act
       final call = dataSource.getMovieRecommendations(tId);
+      // assert
+      expect(() => call, throwsA(isA<ServerException>()));
+    });
+  });
+
+  group('Search Movies', () {
+    final tMovieList = MovieResponse.fromJson(
+            json.decode(readJson('dummy_data/movie_recommendations.json')))
+        .movieList;
+    const tId = 1;
+
+    test('should return list of Movie Model when the response code is 200',
+        () async {
+      String query = "hulk";
+      // arrange
+      when(mockHttpClient
+              .get(Uri.parse('$BASE_URL/search/movie?$API_KEY&query=$query')))
+          .thenAnswer((_) async => http.Response(
+              readJson('dummy_data/movie_recommendations.json'), 200));
+      // act
+      final result = await dataSource.searchMovies(query);
+      // assert
+      expect(result, equals(tMovieList));
+    });
+
+    test('should throw Server Exception when the response code is 404 or other',
+        () async {
+      // arrange
+      String query = "hulk";
+      when(mockHttpClient
+              .get(Uri.parse('$BASE_URL/search/movie?$API_KEY&query=$query')))
+          .thenAnswer((_) async => http.Response('Not Found', 404));
+      // act
+      final call = dataSource.searchMovies(query);
       // assert
       expect(() => call, throwsA(isA<ServerException>()));
     });

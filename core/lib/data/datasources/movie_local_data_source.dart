@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:core/data/models/movie_table.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 abstract class MovieLocalDataSource {
   Future<String> insertWatchlist(MovieTable movie);
@@ -11,15 +12,21 @@ abstract class MovieLocalDataSource {
 
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   final DatabaseHelper databaseHelper;
+  bool isTestingMode;
 
-  MovieLocalDataSourceImpl({required this.databaseHelper});
+  MovieLocalDataSourceImpl(
+      {required this.databaseHelper, this.isTestingMode = false});
 
   @override
   Future<String> insertWatchlist(MovieTable movie) async {
     try {
       await databaseHelper.insertWatchlist(movie);
       return 'Added to Watchlist';
-    } catch (e) {
+    } catch (e, s) {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Insert WatchList Movies", fatal: true);
+      }
       throw DatabaseException(e.toString());
     }
   }
@@ -29,7 +36,11 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
     try {
       await databaseHelper.removeWatchlist(movie);
       return 'Removed from Watchlist';
-    } catch (e) {
+    } catch (e, s) {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Remove Watchlist Movies", fatal: true);
+      }
       throw DatabaseException(e.toString());
     }
   }

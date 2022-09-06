@@ -4,6 +4,7 @@ import 'package:core/core.dart';
 import 'package:core/data/models/series_detail_model.dart';
 import 'package:core/data/models/series_model.dart';
 import 'package:core/data/models/series_response.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:http/http.dart' as http;
 
 abstract class SeriesRemoteDataSource {
@@ -20,8 +21,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
   static const BASE_URL = 'https://api.themoviedb.org/3';
 
   final http.Client client;
-
-  SeriesRemoteDataSourceImpl({required this.client});
+  bool isTestingMode;
+  SeriesRemoteDataSourceImpl(
+      {required this.client, this.isTestingMode = false});
 
   @override
   Future<SeriesDetailResponse> getSeriesDetail(int id) async {
@@ -30,6 +32,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
     if (response.statusCode == 200) {
       return SeriesDetailResponse.fromJson(json.decode(response.body));
     } else {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw ServerException();
     }
   }
@@ -42,6 +47,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
     if (response.statusCode == 200) {
       return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw ServerException();
     }
   }
@@ -54,6 +62,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
     if (response.statusCode == 200) {
       return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw ServerException();
     }
   }
@@ -66,6 +77,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
     if (response.statusCode == 200) {
       return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw ServerException();
     }
   }
@@ -78,6 +92,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
     if (response.statusCode == 200) {
       return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw ServerException();
     }
   }
@@ -90,6 +107,9 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
     if (response.statusCode == 200) {
       return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
     } else {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw ServerException();
     }
   }

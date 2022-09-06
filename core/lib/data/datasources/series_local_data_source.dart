@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:core/data/models/series_table.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 abstract class SeriesLocalDataSource {
   Future<String> insertWatchlistSeries(SeriesTable series);
@@ -11,8 +12,9 @@ abstract class SeriesLocalDataSource {
 
 class SeriesLocalDataSourceImpl implements SeriesLocalDataSource {
   final DatabaseHelper databaseHelper;
-
-  SeriesLocalDataSourceImpl({required this.databaseHelper});
+  bool isTestingMode;
+  SeriesLocalDataSourceImpl(
+      {required this.databaseHelper, this.isTestingMode = false});
 
   @override
   Future<String> insertWatchlistSeries(SeriesTable series) async {
@@ -20,6 +22,9 @@ class SeriesLocalDataSourceImpl implements SeriesLocalDataSource {
       await databaseHelper.insertWatchlistSeries(series);
       return 'Added to Watchlist';
     } catch (e) {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw DatabaseException(e.toString());
     }
   }
@@ -30,6 +35,9 @@ class SeriesLocalDataSourceImpl implements SeriesLocalDataSource {
       await databaseHelper.removeWatchlistSeries(series);
       return 'Removed from Watchlist';
     } catch (e) {
+      if (!isTestingMode) {
+        FirebaseCrashlytics.instance.crash();
+      }
       throw DatabaseException(e.toString());
     }
   }

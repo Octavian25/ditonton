@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:core/data/datasources/movie_local_data_source.dart';
 import 'package:core/data/datasources/movie_remote_data_source.dart';
@@ -41,7 +42,6 @@ import 'package:core/presentation/bloc/movies/top_rated/top_rated_bloc.dart';
 import 'package:core/presentation/bloc/series/on_the_air_series/on_the_air_series_bloc.dart';
 import 'package:core/presentation/bloc/series/popular_series/popular_series_bloc.dart';
 import 'package:core/presentation/bloc/series/top_rated_series/top_rated_series_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 import 'package:search/domain/usecase/search_movies.dart';
 import 'package:search/domain/usecase/search_series.dart';
@@ -189,5 +189,5 @@ void init() {
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton(() => SSLPinning.client);
 }

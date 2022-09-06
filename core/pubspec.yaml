@@ -24,6 +24,9 @@ dependencies:
   sqflite_sqlcipher: ^2.1.1
   encrypt: ^5.0.1
   flutter_bloc: ^8.1.1
+  firebase_core: ^1.21.1
+  firebase_crashlytics: ^2.8.9
+  firebase_analytics: ^9.3.3
 
 dev_dependencies:
   mockito: ^5.0.8
@@ -45,10 +48,9 @@ dependency_overrides:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # To add assets to your package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - certificate/certificate.cer
   #   - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see

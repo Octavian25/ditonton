@@ -1,5 +1,8 @@
 import 'package:about/about_page.dart';
 import 'package:core/core.dart';
+import 'package:ditonton/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:search/search.dart';
 import 'package:core/presentation/pages/home_series_page.dart';
@@ -34,7 +37,13 @@ import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SSLPinning.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   di.init();
   runApp(MyApp());
 }

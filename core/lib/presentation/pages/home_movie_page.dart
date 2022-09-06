@@ -10,6 +10,7 @@ import 'package:core/presentation/pages/popular_movies_page.dart';
 import 'package:core/presentation/pages/top_rated_movies_page.dart';
 import 'package:core/presentation/pages/watchlist_movies_page.dart';
 import 'package:core/utils/route.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
     context.read<PopularMoviesBloc>().add(FetchPopularMovies());
     context.read<NowPlayingBloc>().add(FetchNowPlayingMovies());
     context.read<TopRatedBloc>().add(FetchTopRated());
+  }
+
+  initAnalytic() async {
+    await FirebaseAnalytics.instance.logEvent(
+      name: 'screen_view',
+      parameters: {
+        'firebase_screen': "Home Movie",
+        'firebase_screen_class': HomeMoviePage,
+      },
+    );
   }
 
   @override

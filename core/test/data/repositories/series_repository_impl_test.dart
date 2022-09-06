@@ -7,7 +7,6 @@ import 'package:core/data/models/network_model.dart';
 import 'package:core/data/models/series_detail_model.dart';
 import 'package:core/data/models/series_model.dart';
 import 'package:core/data/repositories/series_repository_impl.dart';
-import 'package:core/domain/entities/series.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -42,24 +41,8 @@ void main() {
       voteAverage: 7.4,
       voteCount: 308);
 
-  final tSeries = Series(
-      backdropPath: "/9GvhICFMiRQA82vS6ydkXxeEkrd.jpg",
-      firstAirDate: DateTime.parse("2022-08-26"),
-      genreIds: const [35, 10759, 10765],
-      id: 92783,
-      name: "She-Hulk: Attorney at Law",
-      originCountry: const ['US'],
-      originalLanguage: "en",
-      originalName: "She-Hulk: Attorney at Law",
-      overview:
-          "Jennifer Walters navigates the complicated life of a single, 30-something attorney who also happens to be a green 6-foot-7-inch superpowered hulk.",
-      popularity: 7472.908,
-      posterPath: "/hJfI6AGrmr4uSHRccfJuSsapvOb.jpg",
-      voteAverage: 7.4,
-      voteCount: 308);
-
   final tSeriesModelList = <SeriesModel>[tSeriesModel];
-  final tSeriesList = <Series>[tSeries];
+  final tSeriesList = testSeriesList;
 
   group('Popular Series', () {
     test("should return list series when call to remote database when success",
@@ -85,6 +68,20 @@ void main() {
       expect(result,
           const Left(ConnectionFailure("Failed to connect to the network")));
     });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getPopularSeries())
+          .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getPopularSeries();
+      // assert
+      verify(mockSeriesRemoteDataSource.getPopularSeries());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
   group("Top Rated Series", () {
     test("should return list series when call to remote database when success ",
@@ -109,6 +106,19 @@ void main() {
       final result = await seriesRepositoryImpl.getTopRatedSeries();
       expect(result,
           const Left(ConnectionFailure("Failed to connect to the network")));
+    });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getTopRatedSeries())
+          .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getTopRatedSeries();
+      // assert
+      verify(mockSeriesRemoteDataSource.getTopRatedSeries());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
   });
 
@@ -137,6 +147,19 @@ void main() {
       expect(result,
           const Left(ConnectionFailure("Failed to connect to the network")));
     });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getSeriesRecommendations(tId))
+          .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getSeriesRecommendations(tId);
+      // assert
+      verify(mockSeriesRemoteDataSource.getSeriesRecommendations(tId));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group("On The Air Series", () {
@@ -162,6 +185,20 @@ void main() {
       final result = await seriesRepositoryImpl.getOnTheAirSeries();
       expect(result,
           const Left(ConnectionFailure("Failed to connect to the network")));
+    });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getOnTheAirSeries())
+          .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getOnTheAirSeries();
+      // assert
+      verify(mockSeriesRemoteDataSource.getOnTheAirSeries());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
   });
 
@@ -222,6 +259,20 @@ void main() {
       expect(result,
           const Left(ConnectionFailure("Failed to connect to the network")));
     });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getSeriesDetail(tId))
+          .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getSeriesDetail(tId);
+      // assert
+      verify(mockSeriesRemoteDataSource.getSeriesDetail(tId));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group('Seach Series', () {
@@ -262,6 +313,20 @@ void main() {
       // assert
       expect(result,
           const Left(ConnectionFailure('Failed to connect to the network')));
+    });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.searchSeries(tQuery))
+          .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.searchSeries(tQuery);
+      // assert
+      verify(mockSeriesRemoteDataSource.searchSeries(tQuery));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
   });
 

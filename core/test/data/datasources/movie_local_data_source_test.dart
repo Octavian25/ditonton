@@ -9,9 +9,10 @@ void main() {
   late MovieLocalDataSourceImpl dataSource;
   late MockDatabaseHelper mockDatabaseHelper;
 
-  setUp(() {
+  setUp(() async {
     mockDatabaseHelper = MockDatabaseHelper();
-    dataSource = MovieLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
+    dataSource = MovieLocalDataSourceImpl(
+        databaseHelper: mockDatabaseHelper, isTestingMode: true);
   });
 
   group('save watchlist', () {

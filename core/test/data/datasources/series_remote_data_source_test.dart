@@ -21,7 +21,8 @@ void main() {
 
   setUpAll(() {
     mockHttpClient = MockHttpClient();
-    dataSource = SeriesRemoteDataSourceImpl(client: mockHttpClient);
+    dataSource =
+        SeriesRemoteDataSourceImpl(client: mockHttpClient, isTestingMode: true);
   });
 
   group('get Popular Series', () {
@@ -167,6 +168,40 @@ void main() {
           .thenAnswer((_) async => http.Response('Not Found', 404));
       // act
       final call = dataSource.getSeriesRecommendations(tId);
+      // assert
+      expect(() => call, throwsA(isA<ServerException>()));
+    });
+  });
+
+  group('Search Series', () {
+    final tSeriesList = SeriesResponse.fromJson(
+            json.decode(readJson('dummy_data/series_recommendations.json')))
+        .seriesList;
+    const tId = 1;
+
+    test('should return list of Series Model when the response code is 200',
+        () async {
+      // arrange
+      String query = "hulk";
+      when(mockHttpClient
+              .get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query')))
+          .thenAnswer((_) async => http.Response(
+              readJson('dummy_data/series_recommendations.json'), 200));
+      // act
+      final result = await dataSource.searchSeries(query);
+      // assert
+      expect(result, equals(tSeriesList));
+    });
+
+    test('should throw Server Exception when the response code is 404 or other',
+        () async {
+      String query = "hulk";
+      // arrange
+      when(mockHttpClient
+              .get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query')))
+          .thenAnswer((_) async => http.Response('Not Found', 404));
+      // act
+      final call = dataSource.searchSeries(query);
       // assert
       expect(() => call, throwsA(isA<ServerException>()));
     });

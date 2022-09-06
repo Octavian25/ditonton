@@ -12,8 +12,8 @@ void main() {
 
   setUpAll(() {
     mockDatabaseHelper = MockDatabaseHelper();
-    seriesLocalDataSourceImpl =
-        SeriesLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
+    seriesLocalDataSourceImpl = SeriesLocalDataSourceImpl(
+        databaseHelper: mockDatabaseHelper, isTestingMode: true);
   });
 
   group("Insert Watch List Series", () {

@@ -9,8 +9,6 @@ const String BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 final kTextTheme = TextTheme(
   headline5: kHeading5,
   headline6: kHeading6,
-  subtitle1: kSubtitle,
-  bodyText2: kBodyText,
 );
 
 const kColorScheme = ColorScheme(

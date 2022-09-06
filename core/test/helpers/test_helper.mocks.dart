@@ -28,7 +28,7 @@ import 'package:core/domain/repositories/series_repository.dart' as _i11;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:http/http.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:sqflite/sqflite.dart' as _i23;
+import 'package:sqflite_sqlcipher/sqflite.dart' as _i23;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -558,4 +558,13 @@ class MockHttpClient extends _i1.Mock implements _i5.Client {
   @override
   void close() => super.noSuchMethod(Invocation.method(#close, []),
       returnValueForMissingStub: null);
+}
+
+/// A class which mocks [SSLPinning].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSSLPinning extends _i1.Mock implements _i8.SSLPinning {
+  MockSSLPinning() {
+    _i1.throwOnMissingStub(this);
+  }
 }
