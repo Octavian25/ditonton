@@ -31,7 +31,7 @@ workflows:
           cd ..
       - name: Build Android APK
         script: |
-        flutter build apk --release
+          flutter build apk --release
     artifacts:
       - coverage/lcov.info
       - build/**/outputs/apk/**/*.apk
