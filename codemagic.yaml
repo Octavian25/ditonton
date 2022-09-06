@@ -16,9 +16,9 @@ workflows:
           source: true
     scripts:
       - flutter packages pub get
-      - name: Testing Bash
-        script: |
-          bash test.sh
+      # - name: Testing Bash
+      #   script: |
+      #     bash test.sh
       - name: Testing Core Package
         script: |
           cd core
