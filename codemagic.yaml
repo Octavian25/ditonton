@@ -30,8 +30,8 @@ workflows:
           flutter test --coverage
           cd ..
       - name: Build Android APK
-        working_directory: android
-        script: ./gradlew assembleRelease
+        script: |
+        flutter build apk --release
     artifacts:
       - coverage/lcov.info
-      - app/build/outputs/**/**/*.apk
+      - build/**/outputs/apk/**/*.apk
