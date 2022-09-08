@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:core/domain/entities/genre.dart';
-import 'package:core/domain/entities/series.dart';
 import 'package:core/domain/entities/series_detail.dart';
-import 'package:core/presentation/provider/series_detail_notifier.dart';
+import 'package:core/presentation/bloc/series/added_watchlist_series/added_watchlist_series_bloc.dart';
+import 'package:core/presentation/bloc/series/detail_series/detail_series_bloc.dart';
+import 'package:core/presentation/bloc/series/recommendation_series/recommendation_series_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:provider/provider.dart';
 
 class SeriesDetailPage extends StatefulWidget {
   static const ROUTE_NAME = '/detail-series';
@@ -22,34 +23,34 @@ class _SeriesDetailPageState extends State<SeriesDetailPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<SeriesDetailNotifier>(context, listen: false)
-          .fetchSeriesDetail(widget.id);
-      Provider.of<SeriesDetailNotifier>(context, listen: false)
-          .loadWatchlistStatus(widget.id);
-    });
+
+    context.read<DetailSeriesBloc>().add(FetchDetailSeries(widget.id));
+    context
+        .read<AddedWatchlistSeriesBloc>()
+        .add(FetchAddedWatchlistSeries(widget.id));
+    context
+        .read<RecommendationSeriesBloc>()
+        .add(FetchRecommendationSeries(widget.id));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<SeriesDetailNotifier>(
-        builder: (context, provider, child) {
-          if (provider.seriesState == RequestState.Loading) {
+      body: BlocBuilder<DetailSeriesBloc, DetailSeriesState>(
+        builder: (context, state) {
+          if (state is DetailSeriesLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (provider.seriesState == RequestState.Loaded) {
-            final series = provider.series;
+          } else if (state is DetailSeriesError) {
+            return Text(state.error);
+          } else if (state is DetailSeriesHasData) {
+            final series = state.result;
             return SafeArea(
-              child: DetailContent(
-                series,
-                provider.seriesRecommendations,
-                provider.isAddedToWatchlist,
-              ),
+              child: DetailContent(series),
             );
           } else {
-            return Text(provider.message);
+            return Container();
           }
         },
       ),
@@ -59,10 +60,10 @@ class _SeriesDetailPageState extends State<SeriesDetailPage> {
 
 class DetailContent extends StatelessWidget {
   final SeriesDetail series;
-  final List<Series> recommendations;
-  final bool isAddedWatchlist;
 
-  const DetailContent(this.series, this.recommendations, this.isAddedWatchlist);
+  const DetailContent(
+    this.series,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -104,51 +105,74 @@ class DetailContent extends StatelessWidget {
                               series.name,
                               style: kHeading5,
                             ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                if (!isAddedWatchlist) {
-                                  await Provider.of<SeriesDetailNotifier>(
-                                          context,
-                                          listen: false)
-                                      .addWatchlist(series);
-                                } else {
-                                  await Provider.of<SeriesDetailNotifier>(
-                                          context,
-                                          listen: false)
-                                      .removeFromWatchlist(series);
-                                }
-
-                                final message =
-                                    Provider.of<SeriesDetailNotifier>(context,
-                                            listen: false)
-                                        .watchlistMessage;
-
-                                if (message ==
-                                        SeriesDetailNotifier
-                                            .watchlistAddSuccessMessage ||
-                                    message ==
-                                        SeriesDetailNotifier
-                                            .watchlistRemoveSuccessMessage) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(message)));
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          content: Text(message),
-                                        );
-                                      });
+                            BlocListener<AddedWatchlistSeriesBloc,
+                                AddedWatchlistSeriesState>(
+                              listener: (context, state) {
+                                if (state is IsAddedWatchlistSeries) {
+                                  if (state.message ==
+                                          AddedWatchlistSeriesBloc
+                                              .watchlistAddSuccessMessage ||
+                                      state.message ==
+                                          AddedWatchlistSeriesBloc
+                                              .watchlistRemoveSuccessMessage) {
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(SnackBar(
+                                          content: Text(state.message)));
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content: Text(state.message),
+                                          );
+                                        });
+                                  }
                                 }
                               },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  isAddedWatchlist
-                                      ? const Icon(Icons.check)
-                                      : const Icon(Icons.add),
-                                  const Text('Watchlist'),
-                                ],
+                              child: BlocBuilder<AddedWatchlistSeriesBloc,
+                                  AddedWatchlistSeriesState>(
+                                builder: (context, state) {
+                                  if (state is IsAddedWatchlistSeries) {
+                                    return ElevatedButton(
+                                      onPressed: () async {
+                                        if (!state.result) {
+                                          context
+                                              .read<AddedWatchlistSeriesBloc>()
+                                              .add(AddToWatchListSeries(
+                                                  series, context));
+                                        } else {
+                                          context
+                                              .read<AddedWatchlistSeriesBloc>()
+                                              .add(RemoveFromWatchListSeries(
+                                                  series, context));
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          state.result
+                                              ? const Icon(Icons.check)
+                                              : const Icon(Icons.add),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          const Text('Watchlist'),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return ElevatedButton(
+                                      onPressed: null,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const [
+                                          CircularProgressIndicator.adaptive()
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ),
                             Text(
@@ -184,24 +208,23 @@ class DetailContent extends StatelessWidget {
                               'Recommendations',
                               style: kHeading6,
                             ),
-                            Consumer<SeriesDetailNotifier>(
-                              builder: (context, data, child) {
-                                if (data.recommendationState ==
-                                    RequestState.Loading) {
+                            BlocBuilder<RecommendationSeriesBloc,
+                                RecommendationSeriesState>(
+                              builder: (context, state) {
+                                if (state is RecommendationSeriesLoading) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (data.recommendationState ==
-                                    RequestState.Error) {
-                                  return Text(data.message);
-                                } else if (data.recommendationState ==
-                                    RequestState.Loaded) {
+                                } else if (state is RecommendationSeriesError) {
+                                  return Text(state.error);
+                                } else if (state
+                                    is RecommendationSeriesHasData) {
                                   return SizedBox(
                                     height: 150,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
-                                        final movie = recommendations[index];
+                                        final movie = state.result[index];
                                         return Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
@@ -233,7 +256,7 @@ class DetailContent extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      itemCount: recommendations.length,
+                                      itemCount: state.result.length,
                                     ),
                                   );
                                 } else {

@@ -1,9 +1,6 @@
 part of 'on_the_air_series_bloc.dart';
 
 @immutable
-abstract class OnTheAirSeriesEvent extends Equatable {}
+abstract class OnTheAirSeriesEvent {}
 
-class FetchOnTheAirSeries extends OnTheAirSeriesEvent {
-  @override
-  List<Object?> get props => [];
-}
+class FetchOnTheAirSeries extends OnTheAirSeriesEvent {}

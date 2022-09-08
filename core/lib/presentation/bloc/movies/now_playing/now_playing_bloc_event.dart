@@ -1,9 +1,6 @@
 part of 'now_playing_bloc_bloc.dart';
 
 @immutable
-abstract class NowPlayingBlocEvent extends Equatable {}
+abstract class NowPlayingBlocEvent {}
 
-class FetchNowPlayingMovies extends NowPlayingBlocEvent {
-  @override
-  List<Object?> get props => [];
-}
+class FetchNowPlayingMovies extends NowPlayingBlocEvent {}

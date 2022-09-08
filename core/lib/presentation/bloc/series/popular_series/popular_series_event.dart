@@ -1,9 +1,6 @@
 part of 'popular_series_bloc.dart';
 
 @immutable
-abstract class PopularSeriesEvent extends Equatable {}
+abstract class PopularSeriesEvent {}
 
-class FetchPopularSeries extends PopularSeriesEvent {
-  @override
-  List<Object?> get props => [];
-}
+class FetchPopularSeries extends PopularSeriesEvent {}

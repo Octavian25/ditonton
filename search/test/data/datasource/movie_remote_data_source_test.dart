@@ -19,7 +19,8 @@ void main() {
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    dataSource = MovieRemoteDataSourceImpl(client: mockHttpClient);
+    dataSource =
+        MovieRemoteDataSourceImpl(client: mockHttpClient, isTestingMode: true);
   });
 
   group('search movies', () {

@@ -1,8 +1,7 @@
-import 'package:core/core.dart';
-import 'package:core/presentation/provider/series_top_rated_notifier.dart';
+import 'package:core/presentation/bloc/series/top_rated_series/top_rated_series_bloc.dart';
 import 'package:core/presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TopRatedSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/top-rated-series';
@@ -15,9 +14,7 @@ class _TopRatedMoviesPageState extends State<TopRatedSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<TopRatedSeriesNotifier>(context, listen: false)
-            .fetchTopRatedSeries());
+    context.read<TopRatedSeriesBloc>().add(FetchTopRatedSeries());
   }
 
   @override
@@ -28,25 +25,27 @@ class _TopRatedMoviesPageState extends State<TopRatedSeriesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TopRatedSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
+        child: BlocBuilder<TopRatedSeriesBloc, TopRatedSeriesState>(
+          builder: (context, state) {
+            if (state is TopRatedSeriesLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.Loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final series = data.series[index];
-                  return SeriesCard(series);
-                },
-                itemCount: data.series.length,
-              );
-            } else {
+            } else if (state is TopRatedSeriesError) {
               return Center(
                 key: const Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.error),
               );
+            } else if (state is TopRatedSeriesHasData) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  final series = state.result[index];
+                  return SeriesCard(series);
+                },
+                itemCount: state.result.length,
+              );
+            } else {
+              return Container();
             }
           },
         ),

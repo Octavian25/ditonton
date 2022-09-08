@@ -39,9 +39,17 @@ import 'package:core/presentation/provider/watchlist_series_notifier.dart';
 import 'package:core/presentation/bloc/movies/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:core/presentation/bloc/movies/now_playing/now_playing_bloc_bloc.dart';
 import 'package:core/presentation/bloc/movies/top_rated/top_rated_bloc.dart';
+import 'package:core/presentation/bloc/movies/added_wachlist_movies/added_wachlist_movies_bloc.dart';
+import 'package:core/presentation/bloc/movies/recommendation_movies/recommendation_movies_bloc.dart';
+import 'package:core/presentation/bloc/movies/detail_movies/detail_movies/detail_movies_bloc.dart';
+import 'package:core/presentation/bloc/movies/watchlist_movies/watchlist_movies_bloc.dart';
 import 'package:core/presentation/bloc/series/on_the_air_series/on_the_air_series_bloc.dart';
 import 'package:core/presentation/bloc/series/popular_series/popular_series_bloc.dart';
 import 'package:core/presentation/bloc/series/top_rated_series/top_rated_series_bloc.dart';
+import 'package:core/presentation/bloc/series/added_watchlist_series/added_watchlist_series_bloc.dart';
+import 'package:core/presentation/bloc/series/recommendation_series/recommendation_series_bloc.dart';
+import 'package:core/presentation/bloc/series/detail_series/detail_series_bloc.dart';
+import 'package:core/presentation/bloc/series/watchlist_series/watchlist_series_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:search/domain/usecase/search_movies.dart';
 import 'package:search/domain/usecase/search_series.dart';
@@ -66,6 +74,21 @@ void init() {
   locator.registerFactory(() => OnTheAirSeriesBloc(locator()));
   locator.registerFactory(() => TopRatedSeriesBloc(locator()));
   locator.registerFactory(() => PopularSeriesBloc(locator()));
+  locator.registerFactory(() => RecommendationMoviesBloc(locator()));
+  locator.registerFactory(() => DetailMoviesBloc(locator()));
+  locator.registerFactory(() => RecommendationSeriesBloc(locator()));
+  locator.registerFactory(() => DetailSeriesBloc(locator()));
+  locator.registerFactory(() => WatchlistMoviesBloc(locator()));
+  locator.registerFactory(() => WatchlistSeriesBloc(locator()));
+  locator.registerFactory(() => AddedWatchlistSeriesBloc(
+      removeWatchlistSeries: locator(),
+      saveWatchlistSeries: locator(),
+      seriesRepository: locator()));
+  locator.registerFactory(() => AddedWachlistMoviesBloc(
+      movieRepository: locator(),
+      removeWatchlist: locator(),
+      saveWatchlist: locator(),
+      isTestingMode: false));
 
   // provider
   locator.registerFactory(

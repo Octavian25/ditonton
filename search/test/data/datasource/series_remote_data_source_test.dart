@@ -20,7 +20,8 @@ void main() {
 
   setUpAll(() {
     mockHttpClient = MockHttpClient();
-    dataSource = SeriesRemoteDataSourceImpl(client: mockHttpClient);
+    dataSource =
+        SeriesRemoteDataSourceImpl(client: mockHttpClient, isTestingMode: true);
   });
 
   group('search series', () {
