@@ -1,12 +1,15 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
+import 'package:core/domain/usecases/series/get_watchlist_series.dart';
 import 'package:core/presentation/bloc/series/watchlist_series/watchlist_series_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../provider/watchlist_series_notifier_test.mocks.dart';
+import 'watchlist_series_bloc_test.mocks.dart';
 
+@GenerateMocks([GetWatchlistSeries])
 void main() {
   late WatchlistSeriesBloc watchlistSeriesBloc;
   late MockGetWatchlistSeries mockGetWatchlistSeries;

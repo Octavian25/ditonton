@@ -11,11 +11,9 @@ import 'package:core/presentation/pages/popular_series_page.dart';
 import 'package:core/presentation/pages/series_detail_page.dart';
 import 'package:core/presentation/pages/top_rated_series_page.dart';
 import 'package:core/presentation/pages/watchlist_series_page.dart';
-import 'package:core/presentation/provider/series_list_notifier.dart';
 import 'package:core/utils/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 class HomeSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/home-series';

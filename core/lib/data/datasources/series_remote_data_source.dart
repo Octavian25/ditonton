@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:core/core.dart';
 import 'package:core/data/models/series_detail_model.dart';
@@ -27,13 +28,23 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
 
   @override
   Future<SeriesDetailResponse> getSeriesDetail(int id) async {
-    final response = await client.get(Uri.parse('$BASE_URL/tv/$id?$API_KEY'));
+    try {
+      final response = await client.get(Uri.parse('$BASE_URL/tv/$id?$API_KEY'));
 
-    if (response.statusCode == 200) {
-      return SeriesDetailResponse.fromJson(json.decode(response.body));
-    } else {
+      if (response.statusCode == 200) {
+        return SeriesDetailResponse.fromJson(json.decode(response.body));
+      } else {
+        if (!isTestingMode) {
+          FirebaseCrashlytics.instance.crash();
+        }
+        throw ServerException();
+      }
+    } on TlsException {
+      throw SSLException();
+    } catch (e, s) {
       if (!isTestingMode) {
-        FirebaseCrashlytics.instance.crash();
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Access Search Series API", fatal: true);
       }
       throw ServerException();
     }
@@ -41,14 +52,25 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
 
   @override
   Future<List<SeriesModel>> getSeriesRecommendations(int id) async {
-    final response = await client
-        .get(Uri.parse('$BASE_URL/tv/$id/recommendations?$API_KEY'));
+    try {
+      final response = await client
+          .get(Uri.parse('$BASE_URL/tv/$id/recommendations?$API_KEY'));
 
-    if (response.statusCode == 200) {
-      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-    } else {
+      if (response.statusCode == 200) {
+        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
+      } else {
+        if (!isTestingMode) {
+          FirebaseCrashlytics.instance.crash();
+        }
+        throw ServerException();
+      }
+    } on TlsException {
+      throw SSLException();
+    } catch (e, s) {
       if (!isTestingMode) {
-        FirebaseCrashlytics.instance.crash();
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Access Series Recommendations Series API",
+            fatal: true);
       }
       throw ServerException();
     }
@@ -56,14 +78,24 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
 
   @override
   Future<List<SeriesModel>> getOnTheAirSeries() async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/tv/on_the_air?$API_KEY'));
+    try {
+      final response =
+          await client.get(Uri.parse('$BASE_URL/tv/on_the_air?$API_KEY'));
 
-    if (response.statusCode == 200) {
-      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-    } else {
+      if (response.statusCode == 200) {
+        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
+      } else {
+        if (!isTestingMode) {
+          FirebaseCrashlytics.instance.crash();
+        }
+        throw ServerException();
+      }
+    } on TlsException {
+      throw SSLException();
+    } catch (e, s) {
       if (!isTestingMode) {
-        FirebaseCrashlytics.instance.crash();
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Access on The Air Series API", fatal: true);
       }
       throw ServerException();
     }
@@ -71,14 +103,24 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
 
   @override
   Future<List<SeriesModel>> getPopularSeries() async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/tv/popular?$API_KEY'));
+    try {
+      final response =
+          await client.get(Uri.parse('$BASE_URL/tv/popular?$API_KEY'));
 
-    if (response.statusCode == 200) {
-      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-    } else {
+      if (response.statusCode == 200) {
+        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
+      } else {
+        if (!isTestingMode) {
+          FirebaseCrashlytics.instance.crash();
+        }
+        throw ServerException();
+      }
+    } on TlsException {
+      throw SSLException();
+    } catch (e, s) {
       if (!isTestingMode) {
-        FirebaseCrashlytics.instance.crash();
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Access popular Series API", fatal: true);
       }
       throw ServerException();
     }
@@ -86,14 +128,25 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
 
   @override
   Future<List<SeriesModel>> getTopRatedSeries() async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/tv/top_rated?$API_KEY'));
+    try {
+      final response =
+          await client.get(Uri.parse('$BASE_URL/tv/top_rated?$API_KEY'));
 
-    if (response.statusCode == 200) {
-      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-    } else {
+      if (response.statusCode == 200) {
+        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
+      } else {
+        if (!isTestingMode) {
+          FirebaseCrashlytics.instance.crash();
+        }
+        throw ServerException();
+      }
+    } on TlsException {
+      throw SSLException();
+    } catch (e, s) {
       if (!isTestingMode) {
-        FirebaseCrashlytics.instance.crash();
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Access Top Rated Series Series API",
+            fatal: true);
       }
       throw ServerException();
     }
@@ -101,14 +154,24 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
 
   @override
   Future<List<SeriesModel>> searchSeries(String query) async {
-    final response = await client
-        .get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query'));
+    try {
+      final response = await client
+          .get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$query'));
 
-    if (response.statusCode == 200) {
-      return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
-    } else {
+      if (response.statusCode == 200) {
+        return SeriesResponse.fromJson(json.decode(response.body)).seriesList;
+      } else {
+        if (!isTestingMode) {
+          FirebaseCrashlytics.instance.crash();
+        }
+        throw ServerException();
+      }
+    } on TlsException {
+      throw SSLException();
+    } catch (e, s) {
       if (!isTestingMode) {
-        FirebaseCrashlytics.instance.crash();
+        FirebaseCrashlytics.instance.recordError(e, s,
+            reason: "Error When Access Search Series API", fatal: true);
       }
       throw ServerException();
     }

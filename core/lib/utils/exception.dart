@@ -5,3 +5,5 @@ class DatabaseException implements Exception {
 
   DatabaseException(this.message);
 }
+
+class SSLException implements Exception {}

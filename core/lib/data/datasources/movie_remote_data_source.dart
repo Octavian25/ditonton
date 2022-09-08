@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:core/core.dart';
 import 'package:core/data/models/movie_detail_model.dart';
@@ -19,6 +20,7 @@ abstract class MovieRemoteDataSource {
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   static const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
   static const BASE_URL = 'https://api.themoviedb.org/3';
+  // static const BASE_URL = 'https://google.com/';
 
   final http.Client client;
   bool isTestingMode;
@@ -35,6 +37,8 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       } else {
         throw ServerException();
       }
+    } on TlsException {
+      throw SSLException();
     } catch (e, s) {
       if (!isTestingMode) {
         FirebaseCrashlytics.instance.recordError(e, s,
@@ -53,8 +57,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       if (response.statusCode == 200) {
         return MovieDetailResponse.fromJson(json.decode(response.body));
       } else {
-        throw ServerException();
+        throw SSLException();
       }
+    } on TlsException {
+      throw ServerException();
     } catch (e, s) {
       if (!isTestingMode) {
         FirebaseCrashlytics.instance.recordError(e, s,
@@ -73,8 +79,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       if (response.statusCode == 200) {
         return MovieResponse.fromJson(json.decode(response.body)).movieList;
       } else {
-        throw ServerException();
+        throw SSLException();
       }
+    } on TlsException {
+      throw ServerException();
     } catch (e, s) {
       if (!isTestingMode) {
         FirebaseCrashlytics.instance.recordError(e, s,
@@ -99,6 +107,8 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
         }
         throw ServerException();
       }
+    } on TlsException {
+      throw SSLException();
     } catch (e, s) {
       if (!isTestingMode) {
         FirebaseCrashlytics.instance.recordError(e, s,
@@ -122,6 +132,8 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
         }
         throw ServerException();
       }
+    } on TlsException {
+      throw SSLException();
     } catch (e, s) {
       if (!isTestingMode) {
         FirebaseCrashlytics.instance.recordError(e, s,
@@ -142,6 +154,8 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       } else {
         throw ServerException();
       }
+    } on TlsException {
+      throw SSLException();
     } catch (e, s) {
       if (!isTestingMode) {
         FirebaseCrashlytics.instance.recordError(e, s,

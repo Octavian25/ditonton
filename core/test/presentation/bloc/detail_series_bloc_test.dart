@@ -1,12 +1,15 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
+import 'package:core/domain/usecases/series/get_series_detail.dart';
 import 'package:core/presentation/bloc/series/detail_series/detail_series_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../provider/series_detail_notifier_test.mocks.dart';
+import 'detail_series_bloc_test.mocks.dart';
 
+@GenerateMocks([GetSeriesDetail])
 void main() {
   late DetailSeriesBloc detailSeriesBloc;
   late MockGetSeriesDetail mockGetSeriesDetail;

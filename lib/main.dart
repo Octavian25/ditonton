@@ -15,16 +15,6 @@ import 'package:core/presentation/pages/top_rated_movies_page.dart';
 import 'package:core/presentation/pages/top_rated_series_page.dart';
 import 'package:core/presentation/pages/watchlist_movies_page.dart';
 import 'package:core/presentation/pages/watchlist_series_page.dart';
-import 'package:core/presentation/provider/movie_detail_notifier.dart';
-import 'package:core/presentation/provider/movie_list_notifier.dart';
-import 'package:core/presentation/provider/popular_movies_notifier.dart';
-import 'package:core/presentation/provider/top_rated_movies_notifier.dart';
-import 'package:core/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:core/presentation/provider/series_list_notifier.dart';
-import 'package:core/presentation/provider/series_detail_notifier.dart';
-import 'package:core/presentation/provider/series_top_rated_notifier.dart';
-import 'package:core/presentation/provider/series_popular_notifier.dart';
-import 'package:core/presentation/provider/watchlist_series_notifier.dart';
 import 'package:core/presentation/bloc/movies/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:core/presentation/bloc/movies/now_playing/now_playing_bloc_bloc.dart';
 import 'package:core/presentation/bloc/movies/top_rated/top_rated_bloc.dart';
@@ -61,18 +51,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<SeriesListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<SeriesDetailNotifier>(),
-        ),
         BlocProvider(create: (context) => di.locator<SearchMovieBloc>()),
         BlocProvider(create: (context) => di.locator<SearchSeriesBloc>()),
         BlocProvider(create: (context) => di.locator<PopularMoviesBloc>()),
@@ -95,24 +73,6 @@ class MyApp extends StatelessWidget {
             create: (context) => di.locator<RecommendationMoviesBloc>()),
         ChangeNotifierProvider(
           create: (_) => di.locator<SeriesSearchNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistMovieNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistSeriesNotifier>(),
         ),
       ],
       child: MaterialApp(

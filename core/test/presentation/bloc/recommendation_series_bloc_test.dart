@@ -1,12 +1,15 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
+import 'package:core/domain/usecases/series/get_series_recommendation.dart';
 import 'package:core/presentation/bloc/series/recommendation_series/recommendation_series_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../provider/series_detail_notifier_test.mocks.dart';
+import 'recommendation_series_bloc_test.mocks.dart';
 
+@GenerateMocks([GetSeriesRecommendations])
 void main() {
   late RecommendationSeriesBloc recommendationSeriesBloc;
   late MockGetSeriesRecommendations mockGetSeriesRecommendations;
