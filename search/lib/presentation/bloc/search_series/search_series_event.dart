@@ -1,18 +1,12 @@
 part of 'search_series_bloc.dart';
 
 @immutable
-abstract class SearchSeriesEvent extends Equatable {
+abstract class SearchSeriesEvent {
   const SearchSeriesEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class OnQuerySeriesChanged extends SearchSeriesEvent {
   final String query;
 
   const OnQuerySeriesChanged(this.query);
-
-  @override
-  List<Object> get props => [query];
 }

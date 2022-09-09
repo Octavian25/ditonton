@@ -104,6 +104,20 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getNowPlayingMovies())
+          .thenThrow(SSLException());
+      // act
+      final result = await repository.getNowPlayingMovies();
+      // assert
+      verify(mockRemoteDataSource.getNowPlayingMovies());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group('Popular Movies', () {
@@ -157,6 +171,18 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getPopularMovies()).thenThrow(SSLException());
+      // act
+      final result = await repository.getPopularMovies();
+      // assert
+      verify(mockRemoteDataSource.getPopularMovies());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group('Top Rated Movies', () {
@@ -202,6 +228,18 @@ void main() {
       // arrange
       when(mockRemoteDataSource.getTopRatedMovies())
           .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await repository.getTopRatedMovies();
+      // assert
+      verify(mockRemoteDataSource.getTopRatedMovies());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getTopRatedMovies()).thenThrow(SSLException());
       // act
       final result = await repository.getTopRatedMovies();
       // assert
@@ -292,6 +330,18 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getMovieDetail(tId)).thenThrow(SSLException());
+      // act
+      final result = await repository.getMovieDetail(tId);
+      // assert
+      verify(mockRemoteDataSource.getMovieDetail(tId));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group('Get Movie Recommendations', () {
@@ -354,6 +404,19 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.getMovieRecommendations(tId))
+          .thenThrow(SSLException());
+      // act
+      final result = await repository.getMovieRecommendations(tId);
+      // assert
+      verify(mockRemoteDataSource.getMovieRecommendations(tId));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group('Seach Movies', () {
@@ -401,6 +464,19 @@ void main() {
       // arrange
       when(mockRemoteDataSource.searchMovies(tQuery))
           .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await repository.searchMovies(tQuery);
+      // assert
+      verify(mockRemoteDataSource.searchMovies(tQuery));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockRemoteDataSource.searchMovies(tQuery)).thenThrow(SSLException());
       // act
       final result = await repository.searchMovies(tQuery);
       // assert

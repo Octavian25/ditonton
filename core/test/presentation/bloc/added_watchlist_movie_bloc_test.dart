@@ -50,8 +50,7 @@ void main() {
     act: (bloc) => bloc.add(FetchAddedWachlistMovies(tQuery)),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      IsAddedWatchList(
-          true, AddedWachlistMoviesBloc.watchlistAddSuccessMessage),
+      IsAddedWatchList(true, "Initial Message"),
     ],
     verify: (bloc) {
       verify(mockMovieRepository.isAddedToWatchlist(tQuery));
@@ -138,8 +137,7 @@ void main() {
     wait: const Duration(milliseconds: 500),
     expect: () => [
       AddedWachlistMoviesLoading(),
-      IsAddedWatchList(
-          true, AddedWachlistMoviesBloc.watchlistAddSuccessMessage),
+      IsAddedWatchList(true, "Error"),
     ],
     verify: (bloc) {
       verify(mockRemoveWatchlist.execute(testMovieDetail));

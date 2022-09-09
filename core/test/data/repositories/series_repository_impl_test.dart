@@ -82,6 +82,20 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getPopularSeries())
+          .thenThrow(SSLException());
+      // act
+      final result = await seriesRepositoryImpl.getPopularSeries();
+      // assert
+      verify(mockSeriesRemoteDataSource.getPopularSeries());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
   group("Top Rated Series", () {
     test("should return list series when call to remote database when success ",
@@ -113,6 +127,19 @@ void main() {
       // arrange
       when(mockSeriesRemoteDataSource.getTopRatedSeries())
           .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getTopRatedSeries();
+      // assert
+      verify(mockSeriesRemoteDataSource.getTopRatedSeries());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getTopRatedSeries())
+          .thenThrow(SSLException());
       // act
       final result = await seriesRepositoryImpl.getTopRatedSeries();
       // assert
@@ -160,6 +187,19 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getSeriesRecommendations(tId))
+          .thenThrow(SSLException());
+      // act
+      final result = await seriesRepositoryImpl.getSeriesRecommendations(tId);
+      // assert
+      verify(mockSeriesRemoteDataSource.getSeriesRecommendations(tId));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group("On The Air Series", () {
@@ -193,6 +233,19 @@ void main() {
       // arrange
       when(mockSeriesRemoteDataSource.getOnTheAirSeries())
           .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.getOnTheAirSeries();
+      // assert
+      verify(mockSeriesRemoteDataSource.getOnTheAirSeries());
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getOnTheAirSeries())
+          .thenThrow(SSLException());
       // act
       final result = await seriesRepositoryImpl.getOnTheAirSeries();
       // assert
@@ -273,6 +326,19 @@ void main() {
       expect(
           result, equals(const Left(CommonFailure('Certificated not valid'))));
     });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.getSeriesDetail(tId))
+          .thenThrow(SSLException());
+      // act
+      final result = await seriesRepositoryImpl.getSeriesDetail(tId);
+      // assert
+      verify(mockSeriesRemoteDataSource.getSeriesDetail(tId));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
   });
 
   group('Seach Series', () {
@@ -321,6 +387,19 @@ void main() {
       // arrange
       when(mockSeriesRemoteDataSource.searchSeries(tQuery))
           .thenThrow(const TlsException('Certificated not valid'));
+      // act
+      final result = await seriesRepositoryImpl.searchSeries(tQuery);
+      // assert
+      verify(mockSeriesRemoteDataSource.searchSeries(tQuery));
+      expect(
+          result, equals(const Left(CommonFailure('Certificated not valid'))));
+    });
+    test(
+        'should return Certificated not valid when the device is not send valid ceriticate',
+        () async {
+      // arrange
+      when(mockSeriesRemoteDataSource.searchSeries(tQuery))
+          .thenThrow(SSLException());
       // act
       final result = await seriesRepositoryImpl.searchSeries(tQuery);
       // assert

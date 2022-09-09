@@ -25,7 +25,6 @@ class AddedWachlistMoviesBloc
       : super(AddedWachlistMoviesInitial()) {
     on<FetchAddedWachlistMovies>((event, emit) async {
       final result = await movieRepository.isAddedToWatchlist(event.id);
-      print("HASIL DARI FETCH $result");
       emit(IsAddedWatchList(result, watchlistInitialMessage));
     });
     on<RemoveFromWatchListMovies>(
@@ -35,12 +34,10 @@ class AddedWachlistMoviesBloc
         await result.fold((l) async {
           final result =
               await movieRepository.isAddedToWatchlist(event.movieDetail.id);
-          print("HASIL DARI REMOVE ERROR $result");
           emit(IsAddedWatchList(result, l.message));
         }, (r) async {
           final result =
               await movieRepository.isAddedToWatchlist(event.movieDetail.id);
-          print("HASIL DARI REMOVE SUCCESS $result");
           emit(IsAddedWatchList(result, r));
         });
       },
@@ -52,12 +49,10 @@ class AddedWachlistMoviesBloc
         await result.fold((l) async {
           final result =
               await movieRepository.isAddedToWatchlist(event.movieDetail.id);
-          print("HASIL DARI ADD FAILED $result");
           emit(IsAddedWatchList(result, l.message));
         }, (r) async {
           final result =
               await movieRepository.isAddedToWatchlist(event.movieDetail.id);
-          print("HASIL DARI ADD SUCCESS $result");
           emit(IsAddedWatchList(result, r));
         });
       },
