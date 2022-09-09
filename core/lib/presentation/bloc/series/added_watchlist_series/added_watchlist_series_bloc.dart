@@ -49,14 +49,11 @@ class AddedWatchlistSeriesBloc
         await result.fold((l) async {
           final result = await seriesRepository
               .isAddedToWatchlistSeries(event.seriesDetail.id);
-          emit.isDone;
           emit(IsAddedWatchlistSeries(result, l.message));
         }, (r) async {
           final result = await seriesRepository
               .isAddedToWatchlistSeries(event.seriesDetail.id);
-          emit.isDone;
           emit(IsAddedWatchlistSeries(result, r));
-          Future.delayed(const Duration(seconds: 1));
         });
       },
     );

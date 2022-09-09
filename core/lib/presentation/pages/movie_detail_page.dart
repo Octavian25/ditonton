@@ -121,6 +121,9 @@ class DetailContent extends StatelessWidget {
                                       ..showSnackBar(SnackBar(
                                           content: Text(state.message)));
                                   } else {
+                                    if (state.message == "Initial Message") {
+                                      return;
+                                    }
                                     showDialog(
                                         context: context,
                                         builder: (context) {

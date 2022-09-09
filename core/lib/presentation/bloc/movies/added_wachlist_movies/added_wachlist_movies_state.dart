@@ -18,5 +18,5 @@ class IsAddedWatchList extends AddedWachlistMoviesState {
   final String message;
   IsAddedWatchList(this.result, this.message);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [result, message];
 }

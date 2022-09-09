@@ -27,6 +27,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     } on TlsException {
       return const Left(CommonFailure('Certificated not valid'));
+    } on SSLException {
+      return const Left(CommonFailure('Certificated not valid'));
+    } catch (e) {
+      return Left(CommonFailure(e.toString()));
     }
   }
 
@@ -41,6 +45,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     } on TlsException {
       return const Left(CommonFailure('Certificated not valid'));
+    } on SSLException {
+      return const Left(CommonFailure('Certificated not valid'));
+    } catch (e) {
+      return Left(CommonFailure(e.toString()));
     }
   }
 
@@ -55,6 +63,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     } on TlsException {
       return const Left(CommonFailure('Certificated not valid'));
+    } on SSLException {
+      return const Left(CommonFailure('Certificated not valid'));
+    } catch (e) {
+      return Left(CommonFailure(e.toString()));
     }
   }
 
@@ -69,6 +81,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     } on TlsException {
       return const Left(CommonFailure('Certificated not valid'));
+    } on SSLException {
+      return const Left(CommonFailure('Certificated not valid'));
+    } catch (e) {
+      return Left(CommonFailure(e.toString()));
     }
   }
 
@@ -121,6 +137,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     } on TlsException {
       return const Left(CommonFailure('Certificated not valid'));
+    } on SSLException {
+      return const Left(CommonFailure('Certificated not valid'));
+    } catch (e) {
+      return Left(CommonFailure(e.toString()));
     }
   }
 
@@ -135,6 +155,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
       return const Left(ConnectionFailure('Failed to connect to the network'));
     } on TlsException {
       return const Left(CommonFailure('Certificated not valid'));
+    } on SSLException {
+      return const Left(CommonFailure('Certificated not valid'));
+    } catch (e) {
+      return Left(CommonFailure(e.toString()));
     }
   }
 }
